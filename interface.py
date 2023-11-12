@@ -81,7 +81,7 @@ class R_Toolbar(RW_Linear_Contents):
 		VGr = self.Vgr.Input.value() / 1e3
 		VSv = self.Vs.Input.value()  / 1e3
 		VSr = self.Vsr.Input.value() / 1e3
-
+#https://quickmath.com/webMathematica3/quickmath/equations/solve/advanced.jsp#c=solve_solveequationsadvanced&v1=-%2528x%2By%2529*i%2By*j%2520%253D%2520V%250Ay*i-%2528z%2By%2529*j%2520%2520%253D-W&v2=i%250Aj
 		Ia1 = round( -(VGv * R2r + (VGv - VSv) * R2r) / (R2r * (R3r + R1r) + R1r * R2r) , 3)
 		Ia2 = round( -((VGv - VSv) * R2r - VSv * R1r) / (R2r * (R3r + R1r) + R1r * R2r) , 3)
 		R1a = round( Ia1       , 3)
