@@ -1,7 +1,7 @@
 from qt import *
 from math import *
 
-global R1r, R1v, R1a, R2r, R2v, R2a, R3r, R3v, R3a, VGv, VGr, VSv, VSr
+global R1r, R1v, R1a, R2r, R2v, R2a, R3r, R3v, R3a, VGv, VGr, VSv, VSr, Ia1, Ia2
 R1r = 1.0
 R1v = 0.0
 R1a = 0.0
@@ -15,6 +15,8 @@ VGv = 4.0
 VGr = 0.0
 VSv = 5.0
 VSr = 0.0
+Ia1 = 0.0
+Ia2 = 0.0
 
 class R_Image_Canvas_Scene(QGraphicsScene):
 	def __init__(self):
@@ -49,27 +51,46 @@ class R_Toolbar(RW_Linear_Contents):
 		self.R2 = RCW_Float_Input_Slider("R2 Ω", 0, 1000, 1e3).setValue(R2r)
 		self.R3 = RCW_Float_Input_Slider("R3 Ω", 0, 1000, 1e3).setValue(R3r)
 		self.Vg = RCW_Float_Input_Slider("Vg V", 0, 1000, 1e3).setValue(VGv)
+		self.Vgr = RCW_Float_Input_Slider("Vg Ω", 0, 1000, 1e3).setValue(VGr)
+
 		self.Vs = RCW_Float_Input_Slider("Vs V", 0, 1000, 1e3).setValue(VSv)
+		self.Vsr = RCW_Float_Input_Slider("Vs Ω", 0, 1000, 1e3).setValue(VSr)
 
 		self.Linear_Layout.addWidget(self.R1)
 		self.Linear_Layout.addWidget(self.R2)
 		self.Linear_Layout.addWidget(self.R3)
 		self.Linear_Layout.addWidget(self.Vg)
+		self.Linear_Layout.addWidget(self.Vgr)
 		self.Linear_Layout.addWidget(self.Vs)
+		self.Linear_Layout.addWidget(self.Vsr)
 
 		self.R1.Input.valueChanged.connect(self.updateSimulationValues)
 		self.R2.Input.valueChanged.connect(self.updateSimulationValues)
 		self.R3.Input.valueChanged.connect(self.updateSimulationValues)
 		self.Vg.Input.valueChanged.connect(self.updateSimulationValues)
 		self.Vs.Input.valueChanged.connect(self.updateSimulationValues)
+		self.Vgr.Input.valueChanged.connect(self.updateSimulationValues)
+		self.Vsr.Input.valueChanged.connect(self.updateSimulationValues)
 
 	def updateSimulationValues(self):
-		global R1r, R1v, R1a, R2r, R2v, R2a, R3r, R3v, R3a, VGv, VGr, VSv, VSr
-		R1r = self.R1.Input.value() / 1e3
-		R2r = self.R2.Input.value() / 1e3
-		R3r = self.R3.Input.value() / 1e3
-		VGv = self.Vg.Input.value() / 1e3
-		VSv = self.Vs.Input.value() / 1e3
+		global R1r, R1v, R1a, R2r, R2v, R2a, R3r, R3v, R3a, VGv, VGr, VSv, VSr, Ia1, Ia2
+		R1r = self.R1.Input.value()  / 1e3
+		R2r = self.R2.Input.value()  / 1e3
+		R3r = self.R3.Input.value()  / 1e3
+		VGv = self.Vg.Input.value()  / 1e3
+		VGr = self.Vgr.Input.value() / 1e3
+		VSv = self.Vs.Input.value()  / 1e3
+		VSr = self.Vsr.Input.value() / 1e3
+
+		Ia1 = round( -(VGv * R2r + (VGv - VSv) * R2r) / (R2r * (R3r + R1r) + R1r * R2r) , 3)
+		Ia2 = round( -((VGv - VSv) * R2r - VSv * R1r) / (R2r * (R3r + R1r) + R1r * R2r) , 3)
+		R1a = round( Ia1 , 3)
+		R2a = round( (Ia1 + Ia2) / 2 , 3)
+		R3a = round( Ia2 , 3)
+		R1v = round( R1r * R1a , 3)
+		R2v = round( R2r * R2a , 3)
+		R3v = round( R3r * R3a , 3)
+
 		self.Parent.Viewport.update()
 
 class R_Image_Canvas_Viewport(QGraphicsView):
@@ -92,13 +113,21 @@ class Description(QGraphicsRectItem):
 		painter.setPen(QPen(Qt.GlobalColor.black, 2))
 		painter.setBrush(QBrush(Qt.GlobalColor.black))
 		painter.setFont(QFont("Mono", 26))
+
+		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 350, self.mapFromScene(0,0).y() + 300),
+			f"{Ia1}A"
+		)
+		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 880, self.mapFromScene(0,0).y() + 300),
+			f"{Ia2}A"
+		)
+
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 350, self.mapFromScene(0,0).y() + 100),
 			f"{R1r}Ω"
 		)
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 750, self.mapFromScene(0,0).y() + 450),
 			f"{R2r}Ω"
 		)
-		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 900, self.mapFromScene(0,0).y() + 100),
+		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 880, self.mapFromScene(0,0).y() + 100),
 			f"{R3r}Ω"
 		)
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 250, self.mapFromScene(0,0).y() + 450),
@@ -115,7 +144,7 @@ class Description(QGraphicsRectItem):
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 750, self.mapFromScene(0,0).y() + 420),
 			f"{R2v}V"
 		)
-		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 900, self.mapFromScene(0,0).y() + 70),
+		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 880, self.mapFromScene(0,0).y() + 70),
 			f"{R3v}V"
 		)
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 250, self.mapFromScene(0,0).y() + 420),
@@ -131,7 +160,7 @@ class Description(QGraphicsRectItem):
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 750, self.mapFromScene(0,0).y() + 400),
 			f"{R2a}A"
 		)
-		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 900, self.mapFromScene(0,0).y() + 50),
+		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 880, self.mapFromScene(0,0).y() + 50),
 			f"{R3a}A"
 		)
 		super().paint(painter, option, widget)
