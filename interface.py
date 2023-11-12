@@ -84,9 +84,9 @@ class R_Toolbar(RW_Linear_Contents):
 
 		Ia1 = round( -(VGv * R2r + (VGv - VSv) * R2r) / (R2r * (R3r + R1r) + R1r * R2r) , 3)
 		Ia2 = round( -((VGv - VSv) * R2r - VSv * R1r) / (R2r * (R3r + R1r) + R1r * R2r) , 3)
-		R1a = round( Ia1 , 3)
-		R2a = round( (Ia1 + Ia2) / 2 , 3)
-		R3a = round( Ia2 , 3)
+		R1a = round( Ia1       , 3)
+		R2a = round( Ia1 - Ia2 , 3)
+		R3a = round( Ia2       , 3)
 		R1v = round( R1r * R1a , 3)
 		R2v = round( R2r * R2a , 3)
 		R3v = round( R3r * R3a , 3)
@@ -115,52 +115,52 @@ class Description(QGraphicsRectItem):
 		painter.setFont(QFont("Mono", 26))
 
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 350, self.mapFromScene(0,0).y() + 300),
-			f"{Ia1}A"
+			f"{Ia1}  A"
 		)
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 880, self.mapFromScene(0,0).y() + 300),
-			f"{Ia2}A"
+			f"{Ia2}  A"
 		)
 
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 350, self.mapFromScene(0,0).y() + 100),
-			f"{R1r}Ω"
+			f"{R1r}  Ω"
 		)
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 750, self.mapFromScene(0,0).y() + 450),
-			f"{R2r}Ω"
+			f"{R2r}  Ω"
 		)
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 880, self.mapFromScene(0,0).y() + 100),
-			f"{R3r}Ω"
+			f"{R3r}  Ω"
 		)
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 250, self.mapFromScene(0,0).y() + 450),
-			f"{VGv}V"
+			f"{VGv}  V"
 		)
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 1200, self.mapFromScene(0,0).y() + 450),
-			f"{VSv}V"
+			f"{VSv}  V"
 		)
 
 		painter.setFont(QFont("Mono", 13))
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 350, self.mapFromScene(0,0).y() + 70),
-			f"{R1v}V"
+			f"{R1v}  V"
 		)
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 750, self.mapFromScene(0,0).y() + 420),
-			f"{R2v}V"
+			f"{R2v}  V"
 		)
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 880, self.mapFromScene(0,0).y() + 70),
-			f"{R3v}V"
+			f"{R3v}  V"
 		)
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 250, self.mapFromScene(0,0).y() + 420),
-			f"{VGr}Ω"
+			f"{VGr}  Ω"
 		)
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 1200, self.mapFromScene(0,0).y() + 420),
-			f"{VSr}Ω"
+			f"{VSr}  Ω"
 		)
 
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 350, self.mapFromScene(0,0).y() + 50),
-			f"{R1a}A"
+			f"{R1a}  A"
 		)
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 750, self.mapFromScene(0,0).y() + 400),
-			f"{R2a}A"
+			f"{R2a}  A"
 		)
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 880, self.mapFromScene(0,0).y() + 50),
-			f"{R3a}A"
+			f"{R3a}  A"
 		)
 		super().paint(painter, option, widget)
