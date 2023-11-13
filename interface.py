@@ -1,6 +1,44 @@
 from qt import *
 from math import *
 
+def resistance_to_colors(resistance_ohms):
+	color_codes = {
+		0: Qt.GlobalColor.black,   # Black
+		1: QColor(139, 69, 19),    # Brown
+		2: Qt.GlobalColor.red,     # Red
+		3: QColor(255, 165, 0),    # Orange
+		4: Qt.GlobalColor.yellow,  # Yellow
+		5: Qt.GlobalColor.green,   # Green
+		6: Qt.GlobalColor.blue,    # Blue
+		7: QColor(255, 0, 144),    # Violet
+		8: Qt.GlobalColor.gray,    # Gray
+		9: Qt.GlobalColor.white    # White
+	}
+
+	tolerance_code = {
+		1: QColor(139, 69, 19),   # Brown  (±1%)
+		2: Qt.GlobalColor.red,    # Red    (±2%)
+		3: Qt.GlobalColor.green,  # Green  (±0.5%)
+		4: Qt.GlobalColor.blue,   # Blue   (±0.25%)
+		5: QColor(255, 0, 144),   # Violet (±0.1%)
+		6: Qt.GlobalColor.gray    # Gray   (±0.05%)
+	}
+
+	number = str(resistance_ohms)
+	mult = int(number.find("."))
+	if mult < 2:
+		color_band1 = color_codes[0]
+		color_band2 = color_codes[int(number[0])]
+	else:
+		color_band1 = color_codes[int(number[0])]
+		color_band2 = color_codes[int(number[1])]
+
+	color_band3 = color_codes[mult]
+	color_band4 = tolerance_code[2]
+
+	return [color_band1, color_band2, color_band3, color_band4]
+
+
 global R1r, R1v, R1a, R2r, R2v, R2a, R3r, R3v, R3a, VGv, VGr, VSv, VSr, Ia1, Ia2
 R1r = 1.0
 R1v = 0.0
@@ -166,4 +204,46 @@ class Description(QGraphicsRectItem):
 		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 880, self.mapFromScene(0,0).y() + 50),
 			f"{R3a}  A"
 		)
+
+
+		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 145, self.mapFromScene(0,0).y() + 580),
+			"R1"
+		)
+		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 345, self.mapFromScene(0,0).y() + 580),
+			"R2"
+		)
+		painter.drawText(QPointF(self.mapFromScene(0,0).x() + 545, self.mapFromScene(0,0).y() + 580),
+			"R3"
+		)
+
+		colors = resistance_to_colors(R1r)
+		painter.setBrush(QBrush(colors[0]))
+		painter.drawRect(QRect(self.mapFromScene(0,0).x() + 100, self.mapFromScene(0,0).y() + 600, 20, 60))
+		painter.setBrush(QBrush(colors[1]))
+		painter.drawRect(QRect(self.mapFromScene(0,0).x() + 130, self.mapFromScene(0,0).y() + 600, 20, 60))
+		painter.setBrush(QBrush(colors[2]))
+		painter.drawRect(QRect(self.mapFromScene(0,0).x() + 160, self.mapFromScene(0,0).y() + 600, 20, 60))
+		painter.setBrush(QBrush(colors[3]))
+		painter.drawRect(QRect(self.mapFromScene(0,0).x() + 190, self.mapFromScene(0,0).y() + 600, 20, 60))
+		
+		colors = resistance_to_colors(R2r)
+		painter.setBrush(QBrush(colors[0]))
+		painter.drawRect(QRect(self.mapFromScene(0,0).x() + 300, self.mapFromScene(0,0).y() + 600, 20, 60))
+		painter.setBrush(QBrush(colors[1]))
+		painter.drawRect(QRect(self.mapFromScene(0,0).x() + 330, self.mapFromScene(0,0).y() + 600, 20, 60))
+		painter.setBrush(QBrush(colors[2]))
+		painter.drawRect(QRect(self.mapFromScene(0,0).x() + 360, self.mapFromScene(0,0).y() + 600, 20, 60))
+		painter.setBrush(QBrush(colors[3]))
+		painter.drawRect(QRect(self.mapFromScene(0,0).x() + 390, self.mapFromScene(0,0).y() + 600, 20, 60))
+		
+		colors = resistance_to_colors(R3r)
+		painter.setBrush(QBrush(colors[0]))
+		painter.drawRect(QRect(self.mapFromScene(0,0).x() + 500, self.mapFromScene(0,0).y() + 600, 20, 60))
+		painter.setBrush(QBrush(colors[1]))
+		painter.drawRect(QRect(self.mapFromScene(0,0).x() + 530, self.mapFromScene(0,0).y() + 600, 20, 60))
+		painter.setBrush(QBrush(colors[2]))
+		painter.drawRect(QRect(self.mapFromScene(0,0).x() + 560, self.mapFromScene(0,0).y() + 600, 20, 60))
+		painter.setBrush(QBrush(colors[3]))
+		painter.drawRect(QRect(self.mapFromScene(0,0).x() + 590, self.mapFromScene(0,0).y() + 600, 20, 60))
+
 		super().paint(painter, option, widget)
