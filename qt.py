@@ -456,6 +456,14 @@ class RW_File_Explorer(QFileDialog):
 
 	def __call__(self):
 		return self
+	
+class RW_Option (QComboBox):
+	def __init__(self):
+		super().__init__()
+		super().setObjectName("Default_Option")
+		super().setContentsMargins(0,0,0,0)
+		self.setFixedHeight(25)
+		super().setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
 class RW_Text_Stream(QTextBrowser):
 	def __init__(self):

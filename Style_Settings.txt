@@ -160,10 +160,29 @@ QSlider::sub-page:horizontal {
 }
 
 QSlider::handle:horizontal {
-
-	background: 			rgb(150,150,150);
+	background: 		rgb(150,150,150);
 	border-style: 		solid;
 	border-width: 		2px;
+	border-color: 		rgb(0,0,0);
+}
+
++ComboBox
+QComboBox#Default_Option {
+	color: 				rgb(0,0,0);
+	background: 		rgb(250,140,25);
+
+	border-style: 		solid;
+	border-width: 		2px;
+	border-radius: 		5px;
+	border-color: 		rgb(0,0,0);
+}
+QWidget::item {
+	color: 				rgb(0,0,0);
+	background: 		rgb(250,140,25);
+
+	border-style: 		solid;
+	border-width: 		2px;
+	border-radius: 		5px;
 	border-color: 		rgb(0,0,0);
 }
 
